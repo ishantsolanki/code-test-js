@@ -1,18 +1,35 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { initialize } from './d3';
+import { stopSimulation } from '../../actions/graphActions';
 
 export const mapStateToProps = (state) => ({
   isSimulationOn: state?.graphState?.isSimulationOn
 });
 
+export const mapDispatchToProps = {
+  stopSimulationBound: stopSimulation,
+}
 
-export const SimilarRestaurantsGraph = ({ isSimulationOn }) => {
+export const SimilarRestaurantsGraph = ({ isSimulationOn, stopSimulationBound }) => {
   const d3Ref = useRef(null);
 
   useEffect(() => {
     initialize();
   }, []);
+
+  useEffect(() => {
+    let spacebarListener;
+    if (isSimulationOn) {
+      spacebarListener = document.body.addEventListener('keypress', (event) => {
+        if (event.keyCode === 32) {
+          stopSimulationBound();
+        }
+      })
+    }
+
+    return () => document.body.removeEventListener('keypress', spacebarListener);
+  }, [isSimulationOn, stopSimulationBound]);
 
   return (
     <div>
@@ -21,4 +38,4 @@ export const SimilarRestaurantsGraph = ({ isSimulationOn }) => {
   );
 };
 
-export default connect(mapStateToProps)(SimilarRestaurantsGraph);
+export default connect(mapStateToProps, mapDispatchToProps)(SimilarRestaurantsGraph);
