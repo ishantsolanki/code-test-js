@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useDebounce } from 'use-debounce';
 import { getSuggestedVenues, setClientId, setClientSecret } from '../../actions/fourSquareActions';
@@ -71,9 +72,23 @@ export const InputForm = ({
   );
 };
 
+InputForm.propTypes = {
+  clientId: PropTypes.string,
+  clientSecret: PropTypes.string,
+  suggestedVenues: PropTypes.array,
+  selectedVenueId: PropTypes.string,
+  isSimulationOn: PropTypes.bool,
+  getSuggestedVenuesBound: PropTypes.func.isRequired,
+  setClientIdBound: PropTypes.func.isRequired,
+  setClientSecretBound: PropTypes.func.isRequired,
+  setGraphInitializedBound: PropTypes.func.isRequired,
+  stopSimulationBound: PropTypes.func.isRequired,
+}
+
 InputForm.defaultProps = {
   suggestedVenues: [],
   selectedVenueId: '',
-}
+  isSimulationOn: false,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(InputForm);

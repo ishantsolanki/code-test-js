@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { initialize } from './d3';
 import { stopSimulation } from '../../actions/graphActions';
@@ -47,5 +48,14 @@ export const SimilarRestaurantsGraph = ({ isSimulationOn, stopSimulationBound })
     </div>
   );
 };
+
+SimilarRestaurantsGraph.propTypes = {
+  isSimulationOn: PropTypes.bool,
+  stopSimulationBound: PropTypes.func.isRequired,
+}
+
+SimilarRestaurantsGraph.defaultProps = {
+  isSimulationOn: false,
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(SimilarRestaurantsGraph);
