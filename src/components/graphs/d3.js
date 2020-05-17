@@ -6,6 +6,8 @@ import {
   select,
   drag,
   event as d3Event,
+  scaleOrdinal,
+  schemeCategory10,
 } from 'd3';
 
 import Restaurants from '../../actions/Restaurants';
@@ -22,6 +24,13 @@ export const initialize = () => {
     .force('center', forceCenter(250, 250));
 }
 
+const color = (d) => {
+  const scale = scaleOrdinal(schemeCategory10).domain(['N', 'E', 'W', 'S']).range(['red', '#4caf50', 'blue', '#ffc107']);
+  const postCodeInitial = d?.location?.postalCode[0];
+
+  return postCodeInitial ? scale(postCodeInitial) : 'black';
+}
+
 export const restart = () => {
   const links = Restaurants.similarities.values();
   const nodes = Restaurants.entries.values();
@@ -35,10 +44,10 @@ export const restart = () => {
         .attr('stroke', 'white')
         .attr('stroke-opacity', 1)
         .attr('stroke-width', 1.5)
-        .attr('fill', 'black')
-        .call(node => node.transition().attr('r', 5)),
+        .attr('fill', color)
+        .call(node => node.transition().attr('r', 6)),
         update => update
-          .attr('fill', d => d.foundSimilar ? 'red' : 'black'),
+          .attr('fill', color),
         exit => exit.remove(),
     )
     .on('mouseover', (d) => {
@@ -90,7 +99,7 @@ export const restart = () => {
   .join('line')
   .attr('stroke', '#999')
   .attr('stroke-opacity', 0.6)
-  .attr('stroke-width', 2)
+  .attr('stroke-width', 2.5)
   .lower();
 
   simulation.on('tick', () => {

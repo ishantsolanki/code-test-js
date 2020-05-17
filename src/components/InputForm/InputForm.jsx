@@ -59,9 +59,12 @@ export const InputForm = ({
             <option key={venue.id} value={venue.name} data-id={venue.id}></option>
           ))}
         </datalist>
-        <button className="showtime-button" disabled={!selectedVenueId} onClick={onShowtimeClick}>Its showtime!</button>
+        {!isSimulationOn && (
+          <button className="showtime-button" disabled={!selectedVenueId} onClick={onShowtimeClick}>Start simulation</button>
+        )}
+
         {isSimulationOn && (
-          <button className="showtime-button" onClick={stopSimulationBound}>Stop simulation</button>
+          <button className="showtime-button" onClick={stopSimulationBound}>Pause simulation</button>
         )}
       </div>
     </div>
