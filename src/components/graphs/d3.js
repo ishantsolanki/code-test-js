@@ -21,12 +21,13 @@ export const initialize = () => {
   simulation = forceSimulation(nodes)
     .force('link', forceLink(links).id(d => d.id))
     .force('charge', forceManyBody())
-    .force('center', forceCenter(250, 250));
+    .force('center', forceCenter(560, 250));
 }
 
 const color = (d) => {
   const scale = scaleOrdinal(schemeCategory10).domain(['N', 'E', 'W', 'S']).range(['red', '#4caf50', 'blue', '#ffc107']);
-  const postCodeInitial = d?.location?.postalCode[0];
+  const postalCode = d?.location?.postalCode ?? '';
+  const postCodeInitial = postalCode.length ? postalCode[0] : null;
 
   return postCodeInitial ? scale(postCodeInitial) : 'black';
 }

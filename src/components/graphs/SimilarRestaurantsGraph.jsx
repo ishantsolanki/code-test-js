@@ -33,19 +33,20 @@ export const SimilarRestaurantsGraph = ({ isSimulationOn, stopSimulationBound })
   }, [isSimulationOn, stopSimulationBound]);
 
   return (
-    <div>
-      <svg ref={d3Ref} id='base-svg' width={500} height={500} />
-
-      {isSimulationOn && (
-        <div>
-          <div style={{color: 'red'}}> Restaurants in the north</div>
-          <div style={{color: '#4caf50'}}>Restaurants in the east</div>
-          <div style={{color: 'blue'}}>Restaurants in the west</div>
-          <div style={{color: '#ffc107'}}>Restaurants in the south</div>
-          <div>Restaurant location not found</div>
-        </div>
-      )}
+    <>
+    <div style={{border: '1px solid lightgray'}}>
+      <svg ref={d3Ref} id='base-svg' width={1120} height={500} />
     </div>
+    {isSimulationOn && (
+      <div>
+        <div style={{color: 'red'}}> Restaurants in the north</div>
+        <div style={{color: '#4caf50'}}>Restaurants in the east</div>
+        <div style={{color: 'blue'}}>Restaurants in the west</div>
+        <div style={{color: '#ffc107'}}>Restaurants in the south</div>
+        <div>Restaurant location not found</div>
+      </div>
+    )}
+    </>
   );
 };
 
