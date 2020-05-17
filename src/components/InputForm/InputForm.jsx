@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { useDebounce } from 'use-debounce';
 import { getSuggestedVenues, setClientId, setClientSecret } from '../../actions/fourSquareActions';
 import { setGraphInitialized, stopSimulation } from '../../actions/graphActions';
 
@@ -35,16 +36,24 @@ export const InputForm = ({
 }) => {
   const onClientIdChange = (event) => setClientIdBound(event.target.value);
   const onClientSecretChange = (event) => setClientSecretBound(event.target.value);
-  const onSuggestedVenuesChange = (event) => getSuggestedVenuesBound(event.target.value);
-  const onShowtimeClick = () => setGraphInitializedBound(selectedVenueId);
-  const onSimulationStop = () => stopSimulationBound();
+  const onShowtimeClick = (event) => {
+    event.target.blur();
+    setGraphInitializedBound(selectedVenueId);
+  }
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm] = useDebounce(searchTerm, 700);
+
+  useEffect(() => {
+    !!debouncedSearchTerm && getSuggestedVenuesBound(debouncedSearchTerm);
+  },[debouncedSearchTerm, getSuggestedVenuesBound]);
 
   return (
     <div className="input-form">
       <div className="input-field">clientID: <input id="clientId" value={clientId} onChange={onClientIdChange}/></div>
       <div className="input-field">clientSecret: <input id="clientSecret" value={clientSecret} onChange={onClientSecretChange}/></div>
       <div className="input-field">
-        venue: <input id="selectedVenue" list="suggestedVenues" onChange={onSuggestedVenuesChange}/>
+        venue: <input id="selectedVenue" list="suggestedVenues" autoComplete="off" onChange={(event) => setSearchTerm(event.target.value)}/>
         <datalist list="venues" id="suggestedVenues">
           {suggestedVenues.map(venue => (
             <option key={venue.id} value={venue.name} data-id={venue.id}></option>
@@ -52,7 +61,7 @@ export const InputForm = ({
         </datalist>
         <button className="showtime-button" disabled={!selectedVenueId} onClick={onShowtimeClick}>Its showtime!</button>
         {isSimulationOn && (
-          <button className="showtime-button" onClick={onSimulationStop}>Stop simulation</button>
+          <button className="showtime-button" onClick={stopSimulationBound}>Stop simulation</button>
         )}
       </div>
     </div>
