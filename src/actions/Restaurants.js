@@ -41,6 +41,5 @@ class Restaurants {
 }
 
 const restaurants = new Restaurants();
-window.restaurants = restaurants;
 
 export default restaurants;

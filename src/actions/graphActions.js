@@ -72,7 +72,6 @@ export const getSimilarVenuesFor = (venueId) => async (dispatch, getState) => {
       dispatch(findNextSimilarVenue());
     }
   } catch(error) {
-    console.log(error);
     return dispatch(getSimilarVenuesError(error))
   }
 }

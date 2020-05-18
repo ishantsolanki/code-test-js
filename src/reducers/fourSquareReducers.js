@@ -5,7 +5,7 @@ export const getSuggestedVenuesSuccess = (state, suggestedVenues) => ({
   suggestedVenues,
 });
 
-export const getSuggestedVenuesError = (state, error) => console.log(error) || ({
+export const getSuggestedVenuesError = (state, error) => ({
   ...state,
   error,
 });
