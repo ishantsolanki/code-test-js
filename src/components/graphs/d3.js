@@ -116,7 +116,7 @@ export const restart = () => {
   });
 
   simulation.nodes(nodes);
-  simulation.force('link').links(links).id(d => d.id);
+  simulation.force('link').links(links);
   simulation.alpha(1).restart();
 }
 
