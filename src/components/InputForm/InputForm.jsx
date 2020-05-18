@@ -8,6 +8,7 @@ import { setGraphInitialized, stopSimulation } from '../../actions/graphActions'
 import './InputForm.css';
 
 const mapStateToProps = (state) => ({
+  apiErrorDetail: state?.fourSquare?.error?.meta?.errorDetail,
   clientId: state?.fourSquare?.clientId,
   clientSecret: state?.fourSquare?.clientSecret,
   suggestedVenues: state?.fourSquare?.suggestedVenues,
@@ -24,6 +25,7 @@ const mapDispatchToProps = {
 }
 
 export const InputForm = ({
+  apiErrorDetail,
   clientId,
   clientSecret,
   suggestedVenues,
@@ -53,6 +55,9 @@ export const InputForm = ({
     <div className="input-form">
       <div className="input-field">clientID: <input id="clientId" value={clientId} onChange={onClientIdChange}/></div>
       <div className="input-field">clientSecret: <input id="clientSecret" value={clientSecret} onChange={onClientSecretChange}/></div>
+      {apiErrorDetail && (
+        <div className="input-field">{apiErrorDetail}</div>
+      )}
       <div className="input-field">
         venue: <input id="selectedVenue" list="suggestedVenues" autoComplete="off" onChange={(event) => setSearchTerm(event.target.value)}/>
         <datalist list="venues" id="suggestedVenues">
@@ -73,6 +78,7 @@ export const InputForm = ({
 };
 
 InputForm.propTypes = {
+  apiErrorDetail: PropTypes.string,
   clientId: PropTypes.string,
   clientSecret: PropTypes.string,
   suggestedVenues: PropTypes.array,

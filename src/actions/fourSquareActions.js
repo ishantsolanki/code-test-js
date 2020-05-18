@@ -40,7 +40,10 @@ export const getSuggestedVenues = (query) => async(dispatch, getState) => {
     dispatch(selectVenue(query));
     const response = await api.getSuggestedVenues(clientId, clientSecret, query);
     const responseJson = await response.json();
-    return dispatch(getSuggestedVenuesSuccess(responseJson.response.venues.slice(0, 8)));
+    if (responseJson.meta.code === 200) {
+      return dispatch(getSuggestedVenuesSuccess(responseJson.response.venues.slice(0, 8)));
+    }
+    return dispatch(getSuggestedVenuesError(responseJson))
   } catch(error) {
     return dispatch(getSuggestedVenuesError(error))
   }
